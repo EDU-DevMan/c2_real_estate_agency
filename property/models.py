@@ -91,8 +91,10 @@ class Owner(models.Model):
     owner_pure_phone = PhoneNumberField('Нормализованный номер владельца:',
                                         max_length=20, blank=True, null=True)
     apartments_owned = models.ManyToManyField(
-        User,
-        verbose_name='Квартиры в собственности:', blank=True, null=True)
+        Flat,
+        verbose_name='Квартиры в собственности:',
+        related_name='owners',
+        blank=True, null=True)
 
     def __str__(self):
-        return f'{self.owner} {self.owner_pure_phone} {self.apartments_owned}'
+        return f'{self.owner}'
