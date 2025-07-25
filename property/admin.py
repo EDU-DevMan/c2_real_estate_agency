@@ -18,7 +18,8 @@ class ComplaintAboutFlat(admin.ModelAdmin):
 
 
 class ApartmentsOwned(admin.ModelAdmin):
-    # list_display = ['owner']
+    list_display = ['owner', 'owners_phonenumber',
+                    'owner_pure_phone', ]
     raw_id_fields = ['apartments_owned']
 
 
