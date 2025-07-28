@@ -7,7 +7,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Flat(models.Model):
-    new_building = models.BooleanField(null=True, blank=True, default=None)
+    new_building = models.BooleanField('Дом новый',
+                                       null=True, blank=True,
+                                       default=None)
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
