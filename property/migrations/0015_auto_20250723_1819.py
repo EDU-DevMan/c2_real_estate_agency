@@ -6,20 +6,26 @@ import phonenumbers
 
 
 def make_owner_pure_phone(apps, schema_editor):
-
     Flat = apps.get_model('property', 'Flat')
-    flats = Flat.objects.all()
+
+    flats = Flat.objects.only('id',
+                              'owners_phonenumber',
+                              'owner_pure_phone').iterator(chunk_size=500)
     for flat in flats:
-        if phonenumbers.is_valid_number(
-            phonenumbers.parse(
-                flat.owners_phonenumber, "RU")) is False:
-            flat.owner_pure_phone = ""
-            flat.save()
-        else:
-            flat.owner_pure_phone = phonenumbers.format_number(
-                phonenumbers.parse(flat.owners_phonenumber, "RU"),
-                phonenumbers.PhoneNumberFormat.E164)
-            flat.save()
+        try:
+            if phonenumbers.is_valid_number(
+                phonenumbers.parse(
+                    flat.owners_phonenumber, "RU")) is False:
+                flat.owner_pure_phone = ""
+                flat.save()
+            else:
+                flat.owner_pure_phone = phonenumbers.format_number(
+                    phonenumbers.parse(flat.owners_phonenumber, "RU"),
+                    phonenumbers.PhoneNumberFormat.E164)
+                flat.save()
+
+        except phonenumbers.phonenumberutil.NumberParseException:
+            continue
 
 
 class Migration(migrations.Migration):

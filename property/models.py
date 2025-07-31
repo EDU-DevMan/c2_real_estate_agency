@@ -88,7 +88,8 @@ class Owner(models.Model):
                                           db_index=True, max_length=20,)
     owner_pure_phone = PhoneNumberField('Нормализованный номер владельца:',
                                         blank=True, null=True,
-                                        db_index=True, max_length=20,)
+                                        db_index=True, max_length=20,
+                                        )
     apartments_owned = models.ManyToManyField(
         Flat,
         verbose_name='Квартиры в собственности:',
