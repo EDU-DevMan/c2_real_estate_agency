@@ -9,7 +9,9 @@ def make_owners(apps, schema_editor):
 
     owner_map = {}
 
-    flats = Flat.objects.all().iterator(chunk_size=500)
+    flats = Flat.objects.only("owner",
+                              "owners_phonenumber",
+                              "owner_pure_phone").iterator(chunk_size=2000)
     for flat in flats:
         key = (flat.owner.strip(), flat.owners_phonenumber,
                flat.owner_pure_phone)
@@ -24,8 +26,7 @@ def make_owners(apps, schema_editor):
         else:
             owner_obj = owner_map[key]
 
-        flats = list(owner_obj.apartments_owned.all().iterator(
-            chunk_size=500)) + [flat]
+        flats = list(owner_obj.apartments_owned.all()) + [flat]
         owner_obj.apartments_owned.set(flats)
 
 

@@ -11,7 +11,9 @@ NEW_BUILDING_YEAR = 2015
 def ge_building_year(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
 
-    flats = Flat.objects.all().iterator(chunk_size=500)
+    flats = Flat.objects.only('id',
+                              'construction_year',
+                              'new_building').iterator(chunk_size=2000)
     for flat in flats:
         if flat.construction_year >= NEW_BUILDING_YEAR:
             flat.new_building = "True"
