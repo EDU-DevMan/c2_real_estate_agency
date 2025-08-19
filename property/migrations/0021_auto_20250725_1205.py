@@ -11,7 +11,7 @@ def make_owners(apps, schema_editor):
 
     flats = Flat.objects.only("owner",
                               "owners_phonenumber",
-                              "owner_pure_phone").iterator(chunk_size=2000)
+                              "owner_pure_phone").iterator(chunk_size=1000)
     for flat in flats:
         key = (flat.owner.strip(), flat.owners_phonenumber,
                flat.owner_pure_phone)
@@ -23,11 +23,13 @@ def make_owners(apps, schema_editor):
                 owner_pure_phone=flat.owner_pure_phone,
             )
             owner_map[key] = owner_obj
+            flats = list(owner_obj.apartments_owned.all()) + [flat]
+            owner_obj.apartments_owned.set(flats)
+            
         else:
             owner_obj = owner_map[key]
 
-        flats = list(owner_obj.apartments_owned.all()) + [flat]
-        owner_obj.apartments_owned.set(flats)
+
 
 
 class Migration(migrations.Migration):

@@ -13,7 +13,7 @@ def ge_building_year(apps, schema_editor):
 
     flats = Flat.objects.only('id',
                               'construction_year',
-                              'new_building').iterator(chunk_size=2000)
+                              'new_building').iterator(chunk_size=1000)
     for flat in flats:
         if flat.construction_year >= NEW_BUILDING_YEAR:
             flat.new_building = "True"

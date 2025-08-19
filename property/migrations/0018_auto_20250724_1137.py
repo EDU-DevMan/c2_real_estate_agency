@@ -9,7 +9,7 @@ def make_owners(apps, schema_editor):
 
     flats = Flat.objects.only("owner",
                               "owners_phonenumber",
-                              "owner_pure_phone").iterator(chunk_size=2000)
+                              "owner_pure_phone").iterator(chunk_size=1000)
     for flat in flats:
         Owner.objects.get_or_create(
             owner=flat.owner,

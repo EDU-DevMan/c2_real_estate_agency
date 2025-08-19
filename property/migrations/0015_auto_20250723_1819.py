@@ -10,7 +10,7 @@ def make_owner_pure_phone(apps, schema_editor):
 
     flats = Flat.objects.only('id',
                               'owners_phonenumber',
-                              'owner_pure_phone').iterator(chunk_size=2000)
+                              'owner_pure_phone').iterator(chunk_size=1000)
     for flat in flats:
         try:
             if phonenumbers.is_valid_number(
